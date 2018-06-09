@@ -82,8 +82,8 @@ def calc_ca_mi(data):
         data: A two dimensional array
     Return: The average mutual information of an array
     """
-    sum_mi = sum([sum(d) for d in data])
-    return sum_mi / (len(data) * len(data[0]))
+    t_data = list(zip(*data))
+    return [sum(d) / len(d) for d in t_data]
 
 
 print(calc_entropy([0, 1, 0, 1, 1]))
@@ -103,10 +103,10 @@ print("---calc_mi")
 print(calc_mi([1,1,1,0,1,1,1], [1,2,0,0,1,0,2]))
 
 
-# L=101
-# T=100
-L = 5
-T = 10
+L=101
+T=100
+# L = 5
+# T = 10
 # SEED=100
 # rnd.seed(SEED)
 
@@ -131,12 +131,18 @@ print(mi_data)
 
 average_mi = calc_ca_mi(mi_data)
 print(average_mi)
-# fig= plt.figure(figsize=(5, 6))
-# ax= fig.add_subplot(1,1,1)
-# ax.pcolor(np.array(dataXY), vmin = 0, vmax = 1,  cmap= plt.cm.binary)
-# ax.set_xlim(0, L)
-# ax.set_ylim(T-1, 0)
-# ax.set_xlabel("cell number")
-# ax.set_ylabel("step")
-# ax.set_title("rule" + str(RNO))
-# plt.show()
+
+fig = plt.figure(figsize=(5, 6))
+ax = fig.add_subplot(1,1,1)
+ax.pcolor(np.array(cell_data), vmin = 0, vmax = 1,  cmap= plt.cm.binary)
+ax.set_xlim(0, L)
+ax.set_ylim(T-1, 0)
+ax.set_xlabel("cell number")
+ax.set_ylabel("step")
+ax.set_title("rule" + str(RNO) + "MI=" + str(sum(average_mi)/len(average_mi)))
+
+fig_mi = plt.figure(figsize=(5, 6))
+x = [i for i in range(len(average_mi))]
+plt.plot(x, average_mi)
+
+plt.show()
